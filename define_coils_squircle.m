@@ -1,4 +1,4 @@
-function [r, dl, t] =  define_coils_squircle(axial_axis, n, R, D, ...
+function [r, dl, r_tan] =  define_coils_squircle(axial_axis, n, R, D, ...
     start_angle, end_angle, num_el)
 % Generate a parametrized coil with the shape of a squircle.
 %
@@ -33,20 +33,21 @@ drdt = R*((cos(t)).^n + (sin(t)).^n).^(-1/n - 1).*...
 dl = sqrt((r_radial).^2 + (drdt).^2)*dt;
 
 r = [ones(length(r_radial),1)*D, r_radial.*cos(t), r_radial.*sin(t)];
-t = [drdt.*cos(t) - r.*sin(t), drdt.*sin(t) + r.*cos(t), zeros(length(r),1)];
+r_tan = [zeros(length(r_radial),1), drdt.*cos(t) - r_radial.*sin(t), ...
+    drdt.*sin(t) + r_radial.*cos(t)];
 
 if (axial_axis == 1)
-    r = [r(:,1), r(:,2), r(:,3)];
-    t = [t(:,1), t(:,2), t(:,3)];
+    rot_mat = [1 0 0; 0 1 0; 0 0 1];
 elseif (axial_axis == 2)
-    r = [r(:,3), r(:,1), r(:,2)];
-    t = [t(:,3), t(:,1), t(:,2)];
+    rot_mat = [0 -1 0; 1 0 0; 0 0 1];
 else
-    r = [r(:,2), r(:,3), r(:,1)];
-    t = [t(:,2), t(:,3), t(:,1)];
+    rot_mat = [0 0 1; 0 1 0; -1 0 0];
 end
 
-t = t./sqrt(t(:,1).^2 + t(:,2).^2 + t(:,3).^2);
+r = (rot_mat*r')';
+r_tan = (rot_mat*r_tan')';
+
+r_tan = r_tan./sqrt(r_tan(:,1).^2 + r_tan(:,2).^2 + r_tan(:,3).^2);
 
 
 end
