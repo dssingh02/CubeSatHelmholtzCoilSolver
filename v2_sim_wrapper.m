@@ -17,6 +17,12 @@ end_angle = 2*pi; % coil end angle
 % simulation parameters
 num_elements = 1000;
 
+% plotting colors
+clrs = [174,118,163;25,101,176;123,175,222;144,201,135;247,240,86;241,147,45;
+    220,5,12;209,187,215;136,46,114;82,137,199;78,178,101;202,224,171;
+    246,193,65;232,96,28;119,119,119];
+clrs = clrs./255;
+
 %% initialize coils
 [r{1}, dl{1}, t{1}] =  define_coils_squircle(3, n, R, D, ...
     start_angle, end_angle, num_elements);
@@ -27,7 +33,7 @@ num_elements = 1000;
 [r{4}, dl{4}, t{4}] =  define_coils_squircle(1, n, R, -D, ...
     start_angle, end_angle, num_elements);
 
-%% initialize solver domain - plane
+%% solve field on a plane
 
 Z_plane = 0;
 
@@ -117,7 +123,7 @@ xlabel('x (m)')
 ylabel('y (m)')
 
 
-%% loop through
+%% solve field on a plane - loop through
 
 % vid = VideoWriter('run_1.mp4', 'MPEG-4');
 % vid.FrameRate = 29.97;
@@ -215,7 +221,7 @@ end
 
 % close(vid)
 
-%% initialize solver domain - volume field lines
+%% solve field in a volume
 
 Z_plane = 0;
 
@@ -227,11 +233,9 @@ z_q = linspace(-2,2,100);
 
 domain_r = [X(:), Y(:), Z(:)];
 
-%% solve sheet - plane
-
 [B] = solve_B_iterative(r, dl, t, I, N, domain_r, mu0);
 
-%% unwrap sheet - plane
+%% unwrap field in the volume
 
 B_x = B(:,1);
 B_y = B(:,2);
@@ -247,12 +251,7 @@ B_y(B_mag > 10^-3) = NaN;
 B_z(B_mag > 10^-3) = NaN;
 B_mag(B_mag > 10^-3) = NaN;
 
-%% Plot results
-
-clrs = [174,118,163;25,101,176;123,175,222;144,201,135;247,240,86;241,147,45;
-    220,5,12;209,187,215;136,46,114;82,137,199;78,178,101;202,224,171;
-    246,193,65;232,96,28;119,119,119];
-clrs = clrs./255;
+%% Plot field lines in a volume
 
 [startX,startY,startZ] = meshgrid([-2:0.4:2],[-2:0.4:2],2);
 verts = stream3(X,Y,Z,B_x,B_y,B_z,startX,startY,startZ);
