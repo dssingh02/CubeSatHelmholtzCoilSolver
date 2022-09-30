@@ -1,0 +1,51 @@
+clear;
+
+dD_series = linspace(-0.01,0.03,11);
+params = cell(length(dD_series));
+r_homogenous = NaN(length(dD_series), 2);
+
+for param_iter = 1:length(dD_series)
+    dD = dD_series(param_iter);
+    v2_sim_wrapper_homogeneity
+    c_params.I = I;
+    c_params.R = R;
+    c_params.D = D;
+    c_params.n = n;
+    c_params.start_angle = start_angle;
+    c_params.end_angle = end_angle;
+    c_params.num_elements = num_elements;
+    c_params.num_coils = num_coils;
+    c_params.coils = r;
+
+    params{param_iter} = c_params;
+
+    r_homogenous(param_iter,1) = r_s_mag;
+    r_homogenous(param_iter,2) = r_s_dir;
+
+    figure(5)
+    clf;
+    plot(dD_series, r_homogenous(:,1), '-o');
+    hold on;
+    plot(dD_series, r_homogenous(:,2), '-o');
+    hold off;
+end
+
+save('runs\2022-09-29-sim2', 'dD_series', 'params', 'r_homogenous');
+
+%%
+
+clear;
+
+load runs\2022-09-29-sim1.mat
+
+dD = [dD_series];
+r_h = [r_homogenous];
+
+load runs\2022-09-29-sim2.mat
+
+dD = [dD; dD_series];
+r_h = [r_h; r_homogenous];
+
+[dD, idx] = sort(dD);
+r_h = so
+
