@@ -1,5 +1,6 @@
 clear;
 
+%% homogeneity tests
 % import circle data (n = 2)
 load runs\2022-09-29-sim1.mat
 dD_circle = [dD_series'];
@@ -47,3 +48,30 @@ lgd.Location = 'south';
 xlabel('Displacement from Conventional Coil Separation (m)')
 ylabel('Radius of Homogeneous Field Sphere (m)')
 
+%% direction tests
+
+load runs\2022-09-29-sim5.mat
+
+figure(5)
+clf;
+hold on;
+p1 = plot(theta_series, r_homogenous(:,1), 'b-x', 'LineWidth',1);
+p2 = plot(theta_series, r_homogenous(:,2), 'b--s', 'LineWidth',1);
+hold off;
+
+p1.DisplayName = 'Square coils (Magnitude)';
+p2.DisplayName = 'Square coils (Direction)';
+ylim([0.1,0.5])
+
+lgd = legend();
+lgd.Location = 'south';
+
+xlabel('Theta (rad)')
+ylabel('Radius of Homogeneous Field Sphere (m)')
+
+figure(6)
+clf;
+plot(theta_series, theta_sim, 'b-o', 'LineWidth',1);
+
+xlabel('Desired theta (rad)')
+ylabel('Simulated theta (rad)')

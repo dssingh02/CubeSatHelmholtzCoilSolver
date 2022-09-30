@@ -66,6 +66,6 @@ for param_iter = 1:length(theta_series)
 
 end
 
-save('runs\2022-09-29-sim5', 'theta_series', 'params', 'r_homogenous', 'theta_series');
+save('runs\2022-09-29-sim5', 'theta_series', 'params', 'r_homogenous', 'theta_sim');
 
 
