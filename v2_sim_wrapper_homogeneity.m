@@ -1,4 +1,4 @@
-% clear
+clear
 
 %% constants
 
@@ -8,7 +8,7 @@ mu0 = 4*pi*10^(-7);
 % physical parameters
 I = [1,1,1,1]; % current in A
 R = 1; % coil radius
-dD = 0.01;
+dD = 0.05;
 D = 1/2+dD; % coil-to-coil separation
 n = 20; % curve parameter: must be an even integer
 N = [100,100,100,100]; % number of turns
