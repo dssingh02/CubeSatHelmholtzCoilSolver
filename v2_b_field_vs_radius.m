@@ -1,13 +1,11 @@
 clear;
 
+clear;
+
 % physical parameters
 I = [1,1,1,1]; % current in A
-R = 1; % coil radius
-dD_series = linspace(0.02,0.08,6)';
-
-scaling_factor = 0.6;
-R = R*scaling_factor;
-dD_series = dD_series*scaling_factor;
+R_series = linspace(0.1,1,100); % coil radius
+dD_series = 0.05*R_series;
 
 n = 20; % curve parameter: must be an even integer
 N = [100,100,100,100]; % number of turns
@@ -17,10 +15,11 @@ end_angle = 2*pi; % coil end angle
 % simulation parameters
 num_elements = 1000;
 
-params = cell(length(dD_series),1);
-r_homogenous = NaN(length(dD_series), 2);
+params = cell(length(R_series), 1);
+mid_B_field = NaN(length(R_series), 3);
 
-for param_iter = 1:length(dD_series)
+for param_iter = 1:length(R_series)
+    R = R_series(param_iter);
     dD = dD_series(param_iter);
 
     D = R/2+dD; % coil-to-coil separation
@@ -33,7 +32,7 @@ for param_iter = 1:length(dD_series)
 
     num_coils = length(r);
 
-    v2_sim_wrapper_batch
+    v2_sim_wrapper_batch_2
     c_params.I = I;
     c_params.R = R;
     c_params.D = D;
@@ -46,17 +45,16 @@ for param_iter = 1:length(dD_series)
 
     params{param_iter} = c_params;
 
-    r_homogenous(param_iter,1) = r_s_mag;
-    r_homogenous(param_iter,2) = r_s_dir;
+    mid_B_field(param_iter,1) = B_x;
+    mid_B_field(param_iter,2) = B_y;
+    mid_B_field(param_iter,3) = B_z;
 
     figure(5)
     clf;
-    plot(dD_series, r_homogenous(:,1), '-o');
-    hold on;
-    plot(dD_series, r_homogenous(:,2), '-o');
-    hold off;
+    plot(R_series, sqrt(mid_B_field(:,1).^2 + mid_B_field(:,2).^2 + mid_B_field(:,3).^2),...
+        '-');
 end
 
-save('runs\2022-10-07-sim10', 'dD_series', 'params', 'r_homogenous');
+save('runs\2022-10-07-squircle-Bmax-vs-R', 'R_series', 'params', 'mid_B_field');
 
 

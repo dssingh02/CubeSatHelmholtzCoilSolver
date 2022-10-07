@@ -135,13 +135,7 @@ p1.DisplayName = 'Circle (n = 2)';
 p2.DisplayName = 'Squircle (n = 20)';
 
 xlabel('R (m)')
-ylabel('|B_{max}| (Tesla)')
-
-lgd = legend();
-
-set(gca,'YScale','log')
-set(gca,'XScale','log')
-
+ylabel('B_max center)')
 
 
 

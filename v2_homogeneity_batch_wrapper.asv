@@ -5,7 +5,7 @@ I = [1,1,1,1]; % current in A
 R = 1; % coil radius
 dD_series = linspace(0.02,0.08,6)';
 
-scaling_factor = 0.6;
+scaling_factor = 0.2;
 R = R*scaling_factor;
 dD_series = dD_series*scaling_factor;
 
@@ -17,7 +17,7 @@ end_angle = 2*pi; % coil end angle
 % simulation parameters
 num_elements = 1000;
 
-params = cell(length(dD_series),1);
+params = cell(length(dD_series));
 r_homogenous = NaN(length(dD_series), 2);
 
 for param_iter = 1:length(dD_series)

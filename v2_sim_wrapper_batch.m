@@ -13,9 +13,9 @@ clrs = clrs./255;
 
 Z_plane = 0;
 
-x_q = linspace(-0.8,0.8,40);
-y_q = linspace(-0.8,0.8,40);
-z_q = linspace(-0.8,0.8,40);
+x_q = linspace(-0.8*R,0.8*R,40);
+y_q = linspace(-0.8*R,0.8*R,40);
+z_q = linspace(-0.8*R,0.8*R,40);
 
 [X,Y,Z] = meshgrid(x_q, y_q, z_q);
 
